@@ -1,30 +1,27 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlide } from '@ionic/angular';
+import { IonSlides } from '@ionic/angular';
 import { INTRO_KEY } from 'src/app/guards/intro.guard';
 import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
-// import { IonicStorageModule } from '@ionic/storage-angular'
+import { Preferences } from '@capacitor/preferences';
+
 @Component({
-  selector: 'app-intro',
-  templateUrl: './intro.page.html',
-  styleUrls: ['./intro.page.scss'],
+	selector: 'app-intro',
+	templateUrl: './intro.page.html',
+	styleUrls: ['./intro.page.scss']
 })
 export class IntroPage implements OnInit {
+	@ViewChild(IonSlides) slides: IonSlides |any;
 
-  @ViewChild(IonSlide) slides:IonSlide |any;
+	constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
+	ngOnInit() {}
 
-  ngOnInit() {
-  }
-  next(){
-    this.slides.slideNext();
-  }
+	next() {
+		this.slides.slideNext();
+	}
 
-  async start(){
-    await Storage.caller({key: INTRO_KEY, value:'true'});
-    this.router.navigateByUrl('/login', {replaceUrl:true});
-
-  }
-
+	async start() {
+		await Preferences.set({ key: INTRO_KEY, value: 'true' });
+		this.router.navigateByUrl('/login', { replaceUrl: true });
+	}
 }
